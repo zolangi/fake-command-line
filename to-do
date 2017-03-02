@@ -1,0 +1,17 @@
+*** Things to do ***
+  1. Part 1
+       -Creating child process
+       -Executing command to child
+  2. Part 2
+       -Modify shell to add history feature   
+
+*** Tasks ***
+  Part One
+    modify main so that child process gets forked
+    forked process should execute user command
+      requirements...
+        parse user input into separate tokens
+        store tokens in array of char strings
+        pass args arr into execvp()
+          invoke it as execvp(args[0], args)
+          check to see if &: should we wait for the parent process
