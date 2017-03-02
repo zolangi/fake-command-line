@@ -36,3 +36,9 @@ int main(void)
   }
   return 0;
 }
+
+/* args array will be passed to the execvp() function
+ * has the following prototype:execvp(char *command, char *params[]);*/
+execvp(args[0], args){
+  
+}
