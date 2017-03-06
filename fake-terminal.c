@@ -10,20 +10,20 @@ int hist_num = 1;
 
 int history(char *hist[], int current)
 {
-    	int i = current;
+  int i = current;
 	int hist_num2;
 	if(hist_num < 10)
-        	 hist_num2 = 1;
-	else if(hist_num > 10)
-		hist_num2 = hist_num - 10;
-        do {
-                if (hist[i]) {
-                        printf("%d  %s\n", hist_num2, hist[i]);
-                        hist_num2++;
-                }
-                i = (i + 1) % BUFFER_SIZE;
-        } while (i != current);
-        return 0;
+    hist_num2 = 1;
+    else if(hist_num > 10)
+      hist_num2 = hist_num - 10;
+    do {
+      if (hist[i]) {
+        printf("%d  %s\n", hist_num2, hist[i]);
+        hist_num2++;
+      }
+      i = (i + 1) % BUFFER_SIZE;
+    } while (i != current);
+    return 0;
 }
 
 /*//check if command includes &.
@@ -61,11 +61,10 @@ int main(void)
     printf("osh> "); //prompt
     fflush(stdout); //flushes output
     fgets(input, MAX_LINE_LENGTH, stdin); //gets input and length of i
-   
+
     if(input[strlen(input) - 1] == '\n')
       input[strlen(input) - 1] = '\0'; //removes the "/n"
-    
-    printf("INPUT: %s\n", input);
+
     free(hist[current]);
     hist[current] = strdup(input);
   	current = (current + 1) % BUFFER_SIZE;
@@ -76,8 +75,8 @@ int main(void)
           hist[current] = hist[current -1];
     else if (strcmp(input, "quit") == 0)
           break;
-	
-	
+
+
     //here we wouldve had had to include pid = fork() to create a child process
 
     //if it does have an &, then we want both child and parent to execute
