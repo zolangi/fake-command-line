@@ -3,22 +3,21 @@
 #include <string.h>
 #include <unistd.h>
 
-#define MAX_LINE 80 // max length command
-#define BUFFER_SIZE 80 //size of buffer
-
+#define MAX_LINE_LENGTH 80 // max length command
+#define BUFFER_SIZE 10 //size of buffer
+#define DELIMETER "\n" //delimeter
 int hist_num = 1;
 
 int history(char *hist[], int current)
 {
-    int i = current;
-		int hist_num2;
-		if(hist_num < 10)
-         hist_num2 = 1;
-		else if(hist_num > 10)
-			hist_num2 = hist_num - 10;
+    	int i = current;
+	int hist_num2;
+	if(hist_num < 10)
+        	 hist_num2 = 1;
+	else if(hist_num > 10)
+		hist_num2 = hist_num - 10;
         do {
-                if (hist[i]) 
-				{
+                if (hist[i]) {
                         printf("%d  %s\n", hist_num2, hist[i]);
                         hist_num2++;
                 }
@@ -44,23 +43,28 @@ int hasAmpersand(char in[])
 
 int main(void)
 {
-  char input[MAX_LINE];
+  char input[MAX_LINE_LENGTH];
   char *hist[BUFFER_SIZE];
   int i, current = 0;
 
-  char *args[MAX_LINE/2+1]; // command line arguments
+  char *args[MAX_LINE_LENGTH/2+1]; // command line arguments
   int should_run = 1; // flag to determine when to exit program
   pid_t pid = 0;//create pid variable which holds process id parent
 
+  for(i = 0; i <BUFFER_SIZE; i++)
+    hist[i] =NULL;
+
   while(should_run) {
 
-    char *input = (char *)(malloc(MAX_LINE * sizeof(char)));
+    char *input = (char *)(malloc(MAX_LINE_LENGTH * sizeof(char)));
 
     printf("osh> "); //prompt
     fflush(stdout); //flushes output
-    fgets(input, MAX_LINE, stdin); //gets input and length of it
+    fgets(input, MAX_LINE_LENGTH, stdin); //gets input and length of i
+   
+    if(input[strlen(input) - 1] == '\n')
+      input[strlen(input) - 1] = '\0'; //removes the "/n"
     
-    input[strlen(input) - 1] = '\0'; //removes the "/n"
     printf("INPUT: %s\n", input);
     free(hist[current]);
     hist[current] = strdup(input);
