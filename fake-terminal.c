@@ -39,8 +39,6 @@ int hasAmpersand(char in[])
   return 0;
 }
 */
-
-
 int main(void)
 {
   char input[MAX_LINE_LENGTH];
@@ -70,11 +68,11 @@ int main(void)
   	current = (current + 1) % BUFFER_SIZE;
     hist_num++;
     if (strcmp(input, "history") == 0)
-          history(hist, current);
+      history(hist, current);
     else if(strcmp(input, "!!") == 0)
-          hist[current] = hist[current -1];
+      hist[current] = hist[current -1];
     else if (strcmp(input, "quit") == 0)
-          break;
+      break;
 
 
     //here we wouldve had had to include pid = fork() to create a child process
