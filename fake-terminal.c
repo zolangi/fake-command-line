@@ -1,3 +1,4 @@
+/* Zolangi Ramirez, Jose Aparicio, Christian Soltero, Alvin Tsui*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -47,7 +48,6 @@ int main(void)
 
   char *args[MAX_LINE_LENGTH/2+1]; // command line arguments
   int should_run = 1; // flag to determine when to exit program
-  pid_t pid = 0;//create pid variable which holds process id parent
 
   for(i = 0; i <BUFFER_SIZE; i++)
     hist[i] =NULL;
@@ -73,8 +73,13 @@ int main(void)
       hist[current] = hist[current -1];
     else if (strcmp(input, "quit") == 0)
       break;
+    // printf("INPUT: %s\n", input);
 
-
+    pid_t pid = fork();//create pid variable which holds process id parent
+    if(pid == 0) {
+      execvp(input, &input);
+      exit(0);
+    }
     //here we wouldve had had to include pid = fork() to create a child process
 
     //if it does have an &, then we want both child and parent to execute
