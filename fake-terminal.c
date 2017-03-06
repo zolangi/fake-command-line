@@ -5,9 +5,29 @@
 
 #define MAX_LINE 80 // max length command
 #define BUFFER_SIZE 80 //size of buffer
-#define DELIMETER "\n" //delimeter
 
-//check if command includes &.
+int hist_num = 1;
+
+int history(char *hist[], int current)
+{
+    int i = current;
+		int hist_num2;
+		if(hist_num < 10)
+         hist_num2 = 1;
+		else if(hist_num > 10)
+			hist_num2 = hist_num - 10;
+        do {
+                if (hist[i]) 
+				{
+                        printf("%d  %s\n", hist_num2, hist[i]);
+                        hist_num2++;
+                }
+                i = (i + 1) % BUFFER_SIZE;
+        } while (i != current);
+        return 0;
+}
+
+/*//check if command includes &.
 int hasAmpersand(char in[])
 {
   int index = 0;
@@ -19,30 +39,45 @@ int hasAmpersand(char in[])
   }
   return 0;
 }
+*/
+
 
 int main(void)
 {
+  char input[MAX_LINE];
+  char *hist[BUFFER_SIZE];
+  int i, current = 0;
+
   char *args[MAX_LINE/2+1]; // command line arguments
   int should_run = 1; // flag to determine when to exit program
   pid_t pid = 0;//create pid variable which holds process id parent
 
   while(should_run) {
 
-    char *input = (char *)(malloc(MAX_LINE * sizeof(char)));// what is this??? initial input?
+    char *input = (char *)(malloc(MAX_LINE * sizeof(char)));
 
     printf("osh> "); //prompt
     fflush(stdout); //flushes output
     fgets(input, MAX_LINE, stdin); //gets input and length of it
-
-
-
-    input[strlen(input) - 1] = '\0'; //what is this???
-    printf("INPUT: %s\n", input);//what is this??
-
+    
+    input[strlen(input) - 1] = '\0'; //removes the "/n"
+    printf("INPUT: %s\n", input);
+    free(hist[current]);
+    hist[current] = strdup(input);
+  	current = (current + 1) % BUFFER_SIZE;
+    hist_num++;
+    if (strcmp(input, "history") == 0)
+          history(hist, current);
+    else if(strcmp(input, "!!") == 0)
+          hist[current] = hist[current -1];
+    else if (strcmp(input, "quit") == 0)
+          break;
+	
+	
     //here we wouldve had had to include pid = fork() to create a child process
 
     //if it does have an &, then we want both child and parent to execute
-    if(hasAmpersand(input)){
+    /* if(hasAmpersand(input)){
       //if child process, execute
       if (pid == 0) {
         printf("X\n");
@@ -75,7 +110,7 @@ int main(void)
       else{
         printf("T\n");
       }
-    }
+    }*/
     /*
     * After reading user input, the steps are:
     *(2) the child process will invoke execvp()
@@ -83,10 +118,4 @@ int main(void)
     */
   }
   return 0;
-}
-
-/* args array will be passed to the execvp() function
- * prototype:execvp(char *command, char *params[]);*/
-execvp(char *command, char *params[]){
-
 }
